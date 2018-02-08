@@ -39,7 +39,7 @@ using namespace std;
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <GL/glx.h>
-
+#include "fonts.h"
 const int MAX_PARTICLES = 10000;
 const float GRAVITY = 0.1;
 
@@ -72,10 +72,11 @@ class Global {
 	    //define a box shape
         for(int i=0; i<5; i++)
         {
+	    
 	    box[i].width = 100;
 	    box[i].height = 10;
-	    box[i].center.x = 120 + 5*65;
-	    box[i].center.y = 500 - 5*60;
+	    box[i].center.x = 120 + 5*65 - 30*i;
+	    box[i].center.y = 500 - 5*60 + 60*i;
 	    n = 0;
         }
 	}
@@ -182,6 +183,9 @@ void init_opengl(void)
     glOrtho(0, g.xres, 0, g.yres, -1, 1);
     //Set the screen background color
     glClearColor(0.1, 0.1, 0.1, 1.0);
+    //Fonts
+    glEnable(GL_TEXTURE_2D);
+    initalize_fonts();
 }
 
 void makeParticle(int x, int y)
@@ -299,6 +303,7 @@ void movement()
 
 void render()
 {
+    int a = 0;
     glClear(GL_COLOR_BUFFER_BIT);
     //Draw shapes...
     //
@@ -320,6 +325,9 @@ void render()
     glVertex2i( w, -h);
     glEnd();
     glPopMatrix();
+    
+    //glClear(GL_COLOR_BUFFER_BIT);
+    //ggprint8b(&s, 16, 0x00ff0000, "3350-Asteroids");
     }
     //
     //Draw the particle here
@@ -338,7 +346,21 @@ void render()
 	glPopMatrix();
 	//
 	//Draw your 2D text here
-
+    /*	Shape *r[5];
+	glClear(GL_COLOR_BUFFER_BIT);
+    	//
+	for(int i=0; i<5; i++)
+	{
+    	r.bot = gl.yres - 20;
+    	r.left = 10;
+    	r.center = 0;
+	}
+    	ggprint8b(&r, 16, 0x00ff0000, "3350 - Asteroids");
+    	ggprint8b(&r, 16, 0x00ffff00, "n bullets: %i", 12);
+    	ggprint8b(&r, 16, 0x00ffff00, "n asteroids: %i", 12);
+    	ggprint8b(&r, 16, 0x00ffff00, "n asteroids destroyed: %i", 12);
+    	ggprint8b(&r, 16, 0x00ffff00, "Score: %i", 12);
+*/	
 
 
     }
