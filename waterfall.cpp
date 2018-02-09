@@ -75,8 +75,10 @@ class Global {
 	    
 	    box[i].width = 100;
 	    box[i].height = 10;
-	    box[i].center.x = 120 + 5*65 - 30*i;
-	    box[i].center.y = 500 - 5*60 + 60*i;
+	    box[i].center.x = 100 + 30*i;
+            //120 + 5*65 - 30*i;
+	    box[i].center.y = yres - 15 - 60*i;
+            //500 - 5*60 + 60*i;
 	    n = 0;
         }
 	}
@@ -185,7 +187,7 @@ void init_opengl(void)
     glClearColor(0.1, 0.1, 0.1, 1.0);
     //Fonts
     glEnable(GL_TEXTURE_2D);
-    initalize_fonts();
+    //initalize_fonts();
 }
 
 void makeParticle(int x, int y)
@@ -195,18 +197,22 @@ void makeParticle(int x, int y)
     cout << "makeParticle() " << x << " " << y << endl;
     //position of particle
     Particle *p = &g.particle[g.n];
-    p->s.center.x = x;
-    p->s.center.y = y;
+    
+    p->s.center.x = g.box[0].center.x;
+    p->s.center.y = g.yres;
     p->velocity.y = (float)rand() / (float)RAND_MAX;
-    p->velocity.x = (float)rand() / (float)RAND_MAX - 0.5;
+    p->velocity.x = (float)rand() / (float)RAND_MAX;
     ++g.n;
 }
 
 void check_mouse(XEvent *e)
 {
-    static int savex = 0;
-    static int savey = 0;
+    //static int savex = 0;
+    //static int savey = 0;
 
+	//for (int i=0; i<10; i++) {
+        makeParticle(g.xres/2, g.yres);
+    //}
     if (e->type != ButtonRelease &&
 	    e->type != ButtonPress &&
 	    e->type != MotionNotify) {
@@ -220,10 +226,10 @@ void check_mouse(XEvent *e)
     if (e->type == ButtonPress) {
 	if (e->xbutton.button==1) {
 	    //Left button was pressed
-	    int y = g.yres - e->xbutton.y;
-	    for (int i=0; i<10; i++) {
-		makeParticle(e->xbutton.x, y);
-	    }
+	    //int y = g.yres - e->xbutton.y;
+	    //for (int i=0; i<10; i++) {
+		    //makeParticle(e->xbutton.x, y);
+	    //}
 	    return;
 	}
 	if (e->xbutton.button==3) {
@@ -233,18 +239,16 @@ void check_mouse(XEvent *e)
     }
     if (e->type == MotionNotify) {
 	//The mouse moved!
-	if (savex != e->xbutton.x || savey != e->xbutton.y) {
+	/*if (savex != e->xbutton.x || savey != e->xbutton.y) {
 	    savex = e->xbutton.x;
 	    savey = e->xbutton.y;
-	    int y=g.yres - e->xbutton.y;
-	    for (int i=0; i<10; i++) {
-		makeParticle(e->xbutton.x, y);
-	    }
+	    //int y=g.yres - e->xbutton.y;
+	    }*/
 
 
 	}
     }
-}
+
 
 int check_keys(XEvent *e)
 {
@@ -303,7 +307,6 @@ void movement()
 
 void render()
 {
-    int a = 0;
     glClear(GL_COLOR_BUFFER_BIT);
     //Draw shapes...
     //
